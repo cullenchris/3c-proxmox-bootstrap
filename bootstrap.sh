@@ -6,7 +6,7 @@ umask 077
 
 # ============================================================================
 # 3C Technologies - Proxmox Deployment Bootstrap
-# Version: 1.0.0
+# Version: 1.0.1
 #
 # Purpose:
 #   - Run on a fresh Proxmox VE host as root.
@@ -19,7 +19,7 @@ umask 077
 # This bootstrap contains NO passwords, tokens, customer data, or other secrets.
 # ============================================================================
 
-BOOTSTRAP_VERSION="1.0.0"
+BOOTSTRAP_VERSION="1.0.1"
 
 GITHUB_OWNER="cullenchris"
 GITHUB_REPO="3c-proxmox-deployment"
@@ -68,8 +68,11 @@ echo "Proxmox detected:"
 pveversion | head -n1
 echo
 
+[[ -r /dev/tty ]] ||
+    fail "No interactive terminal is available for secure credential entry."
+
 while [[ -z "$GITHUB_TOKEN" ]]; do
-    read -r -s -p "Paste 3C GitHub deployment token: " GITHUB_TOKEN
+    read -r -s -p "Paste 3C GitHub deployment token: " GITHUB_TOKEN </dev/tty
     echo
 
     if [[ -z "$GITHUB_TOKEN" ]]; then
@@ -149,4 +152,8 @@ echo
 
 # Replace the bootstrap process with the deployment process.
 # The GitHub token has already been cleared and is not passed to the deployment.
-exec "$DEPLOY_SCRIPT"
+# Reattach standard input to the interactive console. This is required when
+# the bootstrap itself was launched with "curl ... | bash"; otherwise the
+# deployment script would inherit the exhausted curl pipe as stdin and its
+# customer/password prompts would not work.
+exec "$DEPLOY_SCRIPT" </dev/tty
