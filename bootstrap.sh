@@ -1,3 +1,6 @@
+bootstrap-v1.0.1.sh
+
+
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
