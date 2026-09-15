@@ -5,11 +5,11 @@ IFS=$'\n\t'
 umask 077
 
 # ============================================================================
-# 3C Technologies - Full Customer Stack Bootstrap
-# Version: 1.1.0
+# 3C Technologies - Modular Customer Deployment Bootstrap
+# Version: 1.2.0
 # ============================================================================
 
-BOOTSTRAP_VERSION="1.1.0"
+BOOTSTRAP_VERSION="1.2.0"
 GITHUB_OWNER="cullenchris"
 GITHUB_REPO="3c-proxmox-deployment"
 GITHUB_REF="feature/opencode-management"
@@ -17,10 +17,11 @@ BASE_DIR="/root/3c-deployment"
 GITHUB_TOKEN=""
 
 FILES=(
-    "scripts/deploy-home-assistant.sh"
-    "scripts/deploy-tailscale.sh"
+    "scripts/configure-proxmox.sh"
+    "scripts/install-home-assistant.sh"
     "scripts/deploy-management-vm.sh"
     "scripts/complete-ha-mcp.sh"
+    "scripts/deploy-tailscale.sh"
     "scripts/deploy-customer-stack.sh"
 )
 
@@ -41,7 +42,7 @@ trap 'fail "Bootstrap failed near line ${LINENO}."' ERR
 
 echo
 echo "============================================================================"
-echo "3C Technologies Full Customer Stack Bootstrap v${BOOTSTRAP_VERSION}"
+echo "3C Technologies Modular Customer Deployment Bootstrap v${BOOTSTRAP_VERSION}"
 echo "============================================================================"
 echo
 
@@ -65,7 +66,7 @@ mkdir -p "$BASE_DIR"
 chmod 700 "$BASE_DIR"
 
 echo
-echo "[INFO] Downloading the private 3C customer deployment stack..."
+echo "[INFO] Downloading the private 3C modular deployment scripts..."
 
 for repo_path in "${FILES[@]}"; do
     filename="$(basename "$repo_path")"
@@ -116,7 +117,7 @@ unset GITHUB_TOKEN
 
 echo
 echo "[INFO] All deployment scripts downloaded and validated."
-echo "[INFO] Launching the complete 3C customer deployment..."
+echo "[INFO] Launching the 3C modular deployment menu..."
 echo
 
 exec "${BASE_DIR}/deploy-customer-stack.sh" </dev/tty
