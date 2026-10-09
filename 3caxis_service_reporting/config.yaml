@@ -7,7 +7,7 @@ description: >-
   configuration history, tracks integrations and verified software updates,
   generates a customer report and an internal technician report, and uploads both
   to Nextcloud over public HTTPS.
-stage: stable
+stage: experimental
 startup: application
 boot: auto
 init: false
