@@ -22,7 +22,7 @@ map:
 options:
   nextcloud_server: "https://nextcloud.3caxis.com"
   nextcloud_username: "3caxis-reports"
-  nextcloud_app_password: !secret 3caxis_reports_app_password
+  nextcloud_app_password: null
 schema:
   nextcloud_server: url
   nextcloud_username: str
