@@ -1,23 +1,23 @@
 # 3cAxis Home Assistant Service Reporting
 
-Production Home Assistant App for 3C Technologies managed Home Assistant systems.
+Production Home Assistant App catalog **under development** for 3cAxis-managed Home Assistant installations.
 
-The App runs locally on the customer's Home Assistant installation and produces two monthly reports:
+The tested reporting application produces a customer-facing monthly PDF and an internal technician PDF. Source code and image build definitions are maintained in the private `cullenchris/3c-proxmox-deployment` repository. This public repository contains the customer-facing App catalog metadata.
 
-- Customer service report
-- Internal technician report
+## Release status
 
-Customer identity is supplied by the 3C Technologies Proxmox deployment through:
+**Not ready for customer installation.** The catalog references `ghcr.io/cullenchris/3caxis-service-reporting`. Successful amd64/aarch64 build tests, GHCR publication, runtime installation, and a real end-to-end report have not yet been confirmed.
 
-/config/3caxis_audit/customer.json
+## Customer identity
 
-The Nextcloud password is supplied through Home Assistant's local secrets mechanism and is never stored in this repository.
+The Proxmox deployment must supply a validated customer identity in `/ha_config/3caxis_audit/customer.json` before production reporting starts. Missing identity must prevent production reports rather than use synthetic development values.
 
-The production image is published as a multi-architecture GHCR image for amd64 and aarch64.
+## Nextcloud credentials
 
-The App uses a read-only Home Assistant configuration mount and requires no Home Assistant API, Supervisor API, Docker API, host networking, or privileged access.
+The App expects a Nextcloud app password in its **Supervisor App options**. The manifest's `null` default does **not** provide a password, and does not refer to Home Assistant `secrets.yaml`. A supported secure runtime provisioning process remains to be implemented and tested. Never commit passwords to GitHub or include them in customer metadata, container images, shell command lines, or logs.
 
+## App access and deployment safety
 
-## Release safety notice
+The App uses a read-only Home Assistant configuration mount and persistent private App data. No Home Assistant API, Supervisor API, Docker API, or privileged host access is required for the filesystem-first reporting path.
 
-This catalog entry is not production-ready until the referenced GHCR image has been built and verified for amd64 and aarch64. Nextcloud credentials must be supplied securely at runtime; no password is included in this repository. The current Proxmox installation helper is a development draft and must not be run on customer systems before controlled validation.
+The reporting installer is still a development draft. QEMU Guest Agent transport, Home Assistant App install commands, HAOS paths, and retry behavior are not validated. Do not run it on a customer or live system before a controlled test. Do not merge the feature branch to `main` without approval.
