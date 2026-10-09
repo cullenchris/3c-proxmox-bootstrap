@@ -1,0 +1,30 @@
+name: Check reporting bundle bootstrap prototype
+
+on:
+  push:
+    branches: [feature/ha-service-reporting]
+    paths:
+      - bootstrap-reporting-dev.sh
+      - .github/workflows/check-reporting-bootstrap.yml
+  pull_request:
+    paths:
+      - bootstrap-reporting-dev.sh
+      - .github/workflows/check-reporting-bootstrap.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax-and-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate prototype shell syntax
+        run: bash -n bootstrap-reporting-dev.sh
+      - name: Ensure prototype remains explicitly gated
+        run: |
+          grep -Fq 'REPORTING_BUNDLE_TEST_APPROVED' bootstrap-reporting-dev.sh
+          grep -Fq 'GITHUB_TOKEN' bootstrap-reporting-dev.sh
+          grep -Fq 'Unsafe archive member type' bootstrap-reporting-dev.sh
+          grep -Fq 'This bootstrap does not start the deployment' bootstrap-reporting-dev.sh
