@@ -5,6 +5,7 @@ on:
     branches: [feature/ha-service-reporting]
     paths:
       - bootstrap-reporting-dev.sh
+      - tests/test_reporting_archive.py
       - .github/workflows/check-reporting-bootstrap.yml
   pull_request:
     paths:
@@ -22,6 +23,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate prototype shell syntax
         run: bash -n bootstrap-reporting-dev.sh
+      - name: Test archive extraction and malicious archive rejection
+        run: python3 tests/test_reporting_archive.py
       - name: Ensure prototype remains explicitly gated
         run: |
           grep -Fq 'REPORTING_BUNDLE_TEST_APPROVED' bootstrap-reporting-dev.sh
