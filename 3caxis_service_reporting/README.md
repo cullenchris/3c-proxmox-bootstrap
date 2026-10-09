@@ -16,3 +16,8 @@ The Nextcloud password is supplied through Home Assistant's local secrets mechan
 The production image is published as a multi-architecture GHCR image for amd64 and aarch64.
 
 The App uses a read-only Home Assistant configuration mount and requires no Home Assistant API, Supervisor API, Docker API, host networking, or privileged access.
+
+
+## Release safety notice
+
+This catalog entry is not production-ready until the referenced GHCR image has been built and verified for amd64 and aarch64. Nextcloud credentials must be supplied securely at runtime; no password is included in this repository. The current Proxmox installation helper is a development draft and must not be run on customer systems before controlled validation.
