@@ -11,7 +11,7 @@ vm=100
 r="$(qm guest exec "$vm" -- /usr/bin/ha apps info local_3caxis_service_reporting --raw-json)"
 jq -e '.exited == 1 and .exitcode == 0 and (."out-data" | fromjson? | .result == "ok" and .data.slug == "local_3caxis_service_reporting" and .data.version == "1.0.0" and .data.state == "stopped")' <<<"$r" >/dev/null || { echo "Expected stopped 3cAxis v1.0.0 App not present; refusing." >&2; exit 1; }
 m="$(qm guest exec "$vm" -- /bin/sh -c 'test -f /mnt/data/supervisor/apps/local/3caxis_service_reporting/.3caxis-transfer-incomplete && echo OWNED')"
-jq -e '."out-data" == "OWNED\\n"' <<<"$m" >/dev/null || { echo "3cAxis incomplete transfer marker missing; refusing." >&2; exit 1; }
+jq -e '."out-data" == ("OWNED" + "\n")' <<<"$m" >/dev/null || { echo "3cAxis incomplete transfer marker missing; refusing." >&2; exit 1; }
 read -r -s -p "GitHub read-only deployment token: " token </dev/tty
 echo
 [[ -n "$token" ]] || exit 1
