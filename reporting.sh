@@ -50,7 +50,7 @@ bash -n "$installer"
 credential=/etc/3c-technologies/reporting-nextcloud.json
 if [[ ! -f "$credential" ]]; then
   echo "Nextcloud credentials will be entered privately on this customer's host."
-  python3 - "$credential" </dev/tty <<'PY_CODE'
+  python3 -c '
 import getpass,json,os,pathlib,sys,tempfile
 target=pathlib.Path(sys.argv[1])
 target.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
@@ -69,7 +69,7 @@ try:
 finally:
     if os.path.exists(tmp): os.unlink(tmp)
 print("Local reporting credential created (password not displayed).")
-PY_CODE
+' "$credential" </dev/tty
 fi
 CONFIRM_EXISTING_CUSTOMER_REPORTING_INSTALL=YES \
   bash "$installer" "$vmid" home-assistant
