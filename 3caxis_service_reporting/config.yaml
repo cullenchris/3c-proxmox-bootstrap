@@ -1,0 +1,30 @@
+# 3cAxis Home Assistant Service Reporting
+name: "3cAxis Home Assistant Service Reporting"
+version: "1.0.0"
+slug: "3caxis_service_reporting"
+description: >-
+  Monthly Home Assistant service reporting for 3cAxis technicians. Analyzes local
+  configuration history, tracks integrations and verified software updates,
+  generates a customer report and an internal technician report, and uploads both
+  to Nextcloud over public HTTPS.
+stage: experimental
+startup: application
+boot: auto
+init: false
+stdin: true
+arch:
+  - amd64
+  - aarch64
+map:
+  - type: homeassistant_config
+    read_only: true
+    path: /ha_config
+options:
+  nextcloud_server: "https://nextcloud.3caxis.com"
+  nextcloud_username: "3caxis-reports"
+  nextcloud_app_password: null
+schema:
+  nextcloud_server: url
+  nextcloud_username: str
+  nextcloud_app_password: password
+image: "ghcr.io/cullenchris/3caxis-service-reporting"
