@@ -27,7 +27,7 @@ echo
 [[ -n "$token" ]] || { echo "No token provided." >&2; exit 1; }
 work="$(mktemp -d /root/3caxis-reporting.XXXXXXXX)"
 trap 'unset token; rm -rf -- "$work"' EXIT
-ref="3a2a5e53dcda39b2ebcaf269f54c7c1e122307c1"
+ref="fe0eca83254745a74a76f775a1199601083bffd0"
 api="https://api.github.com/repos/cullenchris/3c-proxmox-deployment/tarball/$ref"
 response="$(curl -sS -L --connect-timeout 20 --max-time 180 -o "$work/source.tar.gz" -w '%{http_code}' --config - <<CURL_CONFIG
 header = "Accept: application/vnd.github+json"
